@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 
-const API_BASE_URL = 'http://localhost:3000';
+const API_BASE_URL = 'https://github-users-test.onrender.com';
 
 interface UserDetailType {
     name: string;

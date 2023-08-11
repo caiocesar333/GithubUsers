@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
-const API_BASE_URL = 'http://localhost:3000';  // Ensure the API server is running and accessible from this URL
+const API_BASE_URL = 'https://github-users-test.onrender.com';  // Ensure the API server is running and accessible from this URL
 
 interface User {
     id: number;
