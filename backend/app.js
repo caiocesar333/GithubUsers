@@ -4,7 +4,7 @@ const cors = require('cors');
 
 const app = express();
 app.use(cors());
-const PORT = 3000;  // You can change this to your preferred port
+
 const GITHUB_API_BASE_URL = 'https://api.github.com';
 
 app.get('/api/users', async (req, res) => {
@@ -13,11 +13,14 @@ app.get('/api/users', async (req, res) => {
 
         // Getting the "Since" from github
         const githubResponse = await axios.get(`${GITHUB_API_BASE_URL}/users?since=${since}`);
+        let nextLink
 
         // Extracting the "Link" header to provide the link for the next page
         const linkHeader = githubResponse.headers.link;
-        const nextLink = linkHeader.split(',').find(link => link.includes('rel="next"'));
-        
+        if (linkHeader) {
+            nextLink = linkHeader.split(',').find(link => link.includes('rel="next"'));
+        }
+
         // Extracting the actual URL for the next page from the "Link" header
         const nextURL = nextLink ? nextLink.match(/<([^>]+)>/)[1] : null;
 
@@ -26,7 +29,7 @@ app.get('/api/users', async (req, res) => {
             nextPage: nextURL
         });
     } catch (error) {
-        console.error('Error fetching GitHub users:', error.message);
+        console.error('Error fetching GitHub users:', error);
         res.status(500).json({ error: 'Failed to fetch GitHub users' });
     }
 });
@@ -68,6 +71,4 @@ app.get('/api/users/:username/repos', async (req, res) => {
 });
 
 
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
-});
+module.exports = app;
